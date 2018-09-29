@@ -34,3 +34,39 @@ npm install --global webpack
 ```
 npm install webpack@beta
 npm install webpack/webpack#<tagname/branchname>
+```
+
+## 2. 起步
+
+```
+mkdir webpack-demo && cd webpack-demo
+npm init -y
+npm install webpack webpack-cli --save-dev
+```
+创建相关文件
+在 `index.js` 中打包 `lodash` 依赖
+```
+npm install --save lodash
+```
+> 在安装一个要打包到生产环境的安装包时，你应该使用 `npm install --save`，如果你在安装一个用于开发环境的安装包（例如，linter, 测试库等），你应该使用 `npm install --save-dev`。请在 [npm 文档](https://docs.npmjs.com/cli/install) 中查找更多信息。
+
+尝试打包并在浏览器中打开 index.html 
+```
+npx webpack
+```
+打包时会有警告，这个不会影响打包，此问题后续会解决
+
+使用配置文件打包
+```
+npx webpack --config webpack.config.js
+```
+如果 `webpack.config.js` 存在，则 `webpack` 命令将默认选择使用它。我们在这里使用 `--config` 选项只是向你表明，可以传递任何名称的配置文件。这对于需要拆分成多个文件的复杂配置是非常有用。  
+
+我们可以通过配置方式指定 loader 规则(loader rules)、插件(plugins)、解析选项(resolve options)，以及许多其他增强功能。了解更多详细信息，请查看[配置文档](https://www.webpackjs.com/configuration)。  
+
+如果你配置了 [npm 脚本(npm script)](https://docs.npmjs.com/misc/scripts) `"build": "webpack"` 也可以运行 `npm run build` 打包  
+
+> 参考链接  
+> [webpack](https://www.webpackjs.com/) | 
+[指南-起步](https://www.webpackjs.com/guides/getting-started/)  
+
