@@ -178,6 +178,21 @@ npm install --save-dev webpack-dev-server
 webpack-dev-server 带有许多可配置的选项。转到相关[文档](https://www.webpackjs.com/configuration/dev-server)以了解更多。  
 现在，服务器正在运行，你可能需要尝试[模块热替换(Hot Module Replacement)](https://www.webpackjs.com/guides/hot-module-replacement)！  
 
+**使用 webpack-dev-middleware**  
+
+`webpack-dev-middleware` 是一个容器(wrapper)，它可以把 webpack 处理后的文件传递给一个服务器(server)。 `webpack-dev-server` 在内部使用了它，同时，它也可以作为一个单独的包来使用，以便进行更多自定义设置来实现更多的需求。  
+首先，安装 `express` 和 `webpack-dev-middleware`：
+```
+npm install --save-dev express webpack-dev-middleware
+```
+添加 npm script 脚本，方便运行 server
+```
+"server": "node server.js",
+```
+终端执行 `npm run server`,并在浏览器访问 `http://localhost:3000` 
+
+> 如果想要了解更多关于模块热替换(Hot Module Replacement)的机制，我们推荐你查看[模块热替换(Hot Module Replacement)指南](https://www.webpackjs.com/guides/hot-module-replacement/)。
+
 
 > 参考链接  
 > [webpack](https://www.webpackjs.com/) | 

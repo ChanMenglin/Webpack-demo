@@ -19,6 +19,7 @@ module.exports = {
   ],
   output: {
     filename: '[name].bundle.js',// 修改 output，以便根据入口起点名称动态生成 bundle 名称
-    path: path.resolve(__dirname, 'dist')
+    path: path.resolve(__dirname, 'dist'),
+    publicPath: '/'
   }
 };
