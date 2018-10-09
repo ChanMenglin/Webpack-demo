@@ -164,6 +164,21 @@ webpack 中有几个不同的选项，可以帮助你在代码发生变化后自
 现在，你可以在命令行中运行 `npm run watch`，就会看到 webpack 编译代码，然而却不会退出命令行。这是因为 script 脚本还在观察文件。  
 现在,修改并保存文件，检查终端窗口。应该可以看到 webpack 自动重新编译修改后的模块！  
 
+**使用 webpack-dev-server**  
+
+`webpack-dev-server` 为你提供了一个简单的 web 服务器，并且能够实时重新加载(live reloading)。  
+```
+npm install --save-dev webpack-dev-server
+```
+用于启动 webpack-dev-server 的 npm script 脚本：
+```
+"start": "webpack-dev-server --open",
+```
+在命令行中运行 `npm start`，就会看到浏览器自动加载页面。如果现在修改和保存任意源文件，web 服务器就会自动重新加载编译后的代码。
+webpack-dev-server 带有许多可配置的选项。转到相关[文档](https://www.webpackjs.com/configuration/dev-server)以了解更多。  
+现在，服务器正在运行，你可能需要尝试[模块热替换(Hot Module Replacement)](https://www.webpackjs.com/guides/hot-module-replacement)！  
+
+
 > 参考链接  
 > [webpack](https://www.webpackjs.com/) | 
 [指南-起步](https://www.webpackjs.com/guides/getting-started/)  

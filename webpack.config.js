@@ -7,7 +7,10 @@ module.exports = {
      app: './src/index.js',// 生成 app.bundle.js
      print: './src/print.js'// 生成 print.bundle.js
   },
-  devtool: 'inline-source-map',
+  devtool: 'inline-source-map',// 进行源文件堆栈跟踪，定位源文件错误
+  devServer: {// 自动刷新 Web 服务器
+     contentBase: './dist'
+  },
   plugins: [
      new CleanWebpackPlugin(['dist']),// 构建前清理输出文件夹
      new HtmlWebpackPlugin({
