@@ -193,6 +193,16 @@ npm install --save-dev express webpack-dev-middleware
 
 > 如果想要了解更多关于模块热替换(Hot Module Replacement)的机制，我们推荐你查看[模块热替换(Hot Module Replacement)指南](https://www.webpackjs.com/guides/hot-module-replacement/)。
 
+### 3. 调整文本编辑器  
+
+使用自动编译代码时，可能会在保存文件时遇到一些问题。某些编辑器具有“安全写入”功能，可能会影响重新编译。  
+要在一些常见的编辑器中禁用此功能，请查看以下列表：
+* Sublime Text 3 - 在用户首选项(user preferences)中添加 `atomic_save: "false"`。
+* IntelliJ - 在首选项(preferences)中使用搜索，查找到 `"safe write"` 并且禁用它。
+* Vim - 在设置(settings)中增加 `:set backupcopy=yes`。
+* WebStorm - 在 `Preferences > Appearance & Behavior > System Settings` 中取消选中 `Use "safe write"`。
+
+推荐阅读：[模块热替换(hot module replacement)](https://www.webpackjs.com/guides/hot-module-replacement)
 
 > 参考链接  
 > [webpack](https://www.webpackjs.com/) | 
