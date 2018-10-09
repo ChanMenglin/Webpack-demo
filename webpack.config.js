@@ -7,6 +7,7 @@ module.exports = {
      app: './src/index.js',// 生成 app.bundle.js
      print: './src/print.js'// 生成 print.bundle.js
   },
+  devtool: 'inline-source-map',
   plugins: [
      new CleanWebpackPlugin(['dist']),// 构建前清理输出文件夹
      new HtmlWebpackPlugin({

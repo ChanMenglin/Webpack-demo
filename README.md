@@ -122,7 +122,7 @@ npm install --save-dev html-webpack-plugin
 ```
 npm install clean-webpack-plugin --save-dev
 ```
-配置完成后运行 `npm run build` 旧的文件已经消失，输出目录中只会看到刚构建的文件
+配置完成后运行 `npm run build` 旧的文件已经消失，输出目录中只会看到刚构建的文件
 
 ### Manifest
 
@@ -131,6 +131,17 @@ npm install clean-webpack-plugin --save-dev
 你可以仔细深入阅读 [manifest 的概念页面](https://www.webpackjs.com/concepts/manifest)，以及通过[缓存指南](https://www.webpackjs.com/guides/caching)来弄清如何与长期缓存相关联。  
 
 推荐阅读：[开发指南](https://www.webpackjs.com/guides/development) | [代码分离指南](https://www.webpackjs.com/guides/code-splitting)
+
+## 6. 开发
+
+> 本节中的工具仅用于开发环境，请不要在生产环境中使用它们！
+
+### 1. 使用 source map
+
+为了更容易地追踪错误和警告，JavaScript 提供了 [source map](http://blog.teamtreehouse.com/introduction-source-maps) 功能，将编译后的代码映射回原始源代码。如果代码中有错误 source map 就会明确的告诉你。  
+source map 有很多[不同的选项](https://www.webpackjs.com/configuration/devtool)可用，请务必仔细阅读它们，以便可以根据需要进行配置。
+
+
 
 > 参考链接  
 > [webpack](https://www.webpackjs.com/) | 
