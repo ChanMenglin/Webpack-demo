@@ -99,6 +99,39 @@ file-loader 和 url-loader 可以接收并加载任何文件，然后将其输�
 npm install --save-dev csv-loader xml-loader papaparse
 ```
 
+## 5. 管理输出
+
+如果我们更改了我们的一个入口起点的名称，甚至添加了一个新的名称，会发生什么？生成的包将被重命名在一个构建中，但是我们的 `index.html` 文件仍然会引用旧的名字。我们用 [HtmlWebpackPlugin](https://www.webpackjs.com/plugins/html-webpack-plugin) 来解决这个问题。
+
+### 设定 HtmlWebpackPlugin
+
+```
+npm install --save-dev html-webpack-plugin
+```
+在我们构建之前，你应该了解，虽然在 `dist/` 文件夹我们已经有 `index.html` 这个文件，然而 `HtmlWebpackPlugin` 还是会默认生成 `index.html` 文件。这就是说，它会用新生成的 `index.html` 文件，把我们的原来的替换。  
+如果你在代码编辑器中将 `index.html` 打开，你就会看到 `HtmlWebpackPlugin` 创建了一个全新的文件，所有的 `bundle` 会自动添加到 `html` 中。  
+如果你想要了解更多 HtmlWebpackPlugin 插件提供的全部功能和选项，那么你就应该多多熟悉 [HtmlWebpackPlugin](https://github.com/jantimon/html-webpack-plugin) 仓库。  
+[html-webpack-template](https://github.com/jaketrent/html-webpack-template)，除了默认模板之外，还提供了一些额外的功能。
+
+### 清理 `/dist` 文件夹
+
+由于过去的指南和代码示例遗留下来，导致我们的 `/dist` 文件夹相当杂乱。webpack 会生成文件，然后将这些文件放置在 `/dist` 文件夹中，但是 webpack 无法追踪到哪些文件是实际在项目中用到的。  
+通常，在每次构建前清理 `/dist` 文件夹，是比较推荐的做法，因此只会生成用到的文件。让我们完成这个需求。  
+
+[clean-webpack-plugin](https://www.npmjs.com/package/clean-webpack-plugin) 是一个比较普及的管理插件。
+```
+npm install clean-webpack-plugin --save-dev
+```
+配置完成后运行 `npm run build` 旧的文件已经消失，输出目录中只会看到刚构建的文件
+
+### Manifest
+
+通过 manifest，webpack 能够对「你的模块映射到输出 bundle 的过程」保持追踪。如果你对通过其他方式来管理 webpack 的[输出](https://www.webpackjs.com/configuration/output)更感兴趣，那么首先了解 manifest 是个好的开始。  
+通过使用 [WebpackManifestPlugin](https://github.com/danethurber/webpack-manifest-plugin)，可以直接将数据提取到一个 json 文件，以供使用。  
+你可以仔细深入阅读 [manifest 的概念页面](https://www.webpackjs.com/concepts/manifest)，以及通过[缓存指南](https://www.webpackjs.com/guides/caching)来弄清如何与长期缓存相关联。  
+
+推荐阅读：[开发指南](https://www.webpackjs.com/guides/development) | [代码分离指南](https://www.webpackjs.com/guides/code-splitting)
+
 > 参考链接  
 > [webpack](https://www.webpackjs.com/) | 
 [指南-起步](https://www.webpackjs.com/guides/getting-started/)  
