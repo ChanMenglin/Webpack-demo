@@ -139,9 +139,30 @@ npm install clean-webpack-plugin --save-dev
 ### 1. 使用 source map
 
 为了更容易地追踪错误和警告，JavaScript 提供了 [source map](http://blog.teamtreehouse.com/introduction-source-maps) 功能，将编译后的代码映射回原始源代码。如果代码中有错误 source map 就会明确的告诉你。  
-source map 有很多[不同的选项](https://www.webpackjs.com/configuration/devtool)可用，请务必仔细阅读它们，以便可以根据需要进行配置。
+source map 有很多[不同的选项](https://www.webpackjs.com/configuration/devtool)可用，请务必仔细阅读它们，以便可以根据需要进行配置。  
 
+### 2. 选择一个开发工具
 
+> 一些文本编辑器具有“安全写入”功能，可能会干扰以下某些工具。阅读[调整文本编辑器](https://www.webpackjs.com/guides/development/#adjusting-your-text-editor)以解决这些问题。
+
+每次要编译代码时，手动运行 `npm run build` 就会变得很麻烦。  
+webpack 中有几个不同的选项，可以帮助你在代码发生变化后自动编译代码：
+* webpack's Watch Mode
+* webpack-dev-server
+* webpack-dev-middleware
+
+多数场景中，你可能需要使用 `webpack-dev-server`  
+
+**使用观察模式**  
+
+你可以指示 webpack "watch" 依赖图中的所有文件以进行更改。如果其中一个文件被更新，代码将被重新编译，所以你不必手动运行整个构建。  
+
+用于启动 webpack 的观察模式的 npm script 脚本：
+```
+"watch": "webpack --watch",
+```
+现在，你可以在命令行中运行 `npm run watch`，就会看到 webpack 编译代码，然而却不会退出命令行。这是因为 script 脚本还在观察文件。  
+现在,修改并保存文件，检查终端窗口。应该可以看到 webpack 自动重新编译修改后的模块！  
 
 > 参考链接  
 > [webpack](https://www.webpackjs.com/) | 
