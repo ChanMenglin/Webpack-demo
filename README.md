@@ -204,6 +204,46 @@ npm install --save-dev express webpack-dev-middleware
 
 推荐阅读：[模块热替换(hot module replacement)](https://www.webpackjs.com/guides/hot-module-replacement)
 
+## 7. 模块热替换
+
+模块热替换(Hot Module Replacement 或 HMR)是 webpack 提供的最有用的功能之一。它允许在运行时更新各种模块，而无需进行完全刷新。本页面重点介绍实现，而[概念页面](https://www.webpackjs.com/concepts/hot-module-replacement)提供了更多关于它的工作原理以及为什么它有用的细节。
+
+> HMR 不适用于生产环境，它应当只在开发环境使用。更多详细信息，请查看[生产环境构建指南](https://www.webpackjs.com/guides/production)。
+
+### 1. 启用 HMR
+
+如果你使用了 webpack-dev-middleware 而没有使用 webpack-dev-server，请使用 [webpack-hot-middleware](https://github.com/webpack-contrib/webpack-hot-middleware) package 包，以在你的自定义服务或应用程序上启用 HMR。  
+> 你可以通过命令来修改 [webpack-dev-server](https://github.com/webpack/webpack-dev-server) 的配置：`webpack-dev-server --hotOnly`。  
+
+我们还添加了 `NamedModulesPlugin`，以便更容易查看要修补(patch)的依赖。在起步阶段，我们将通过在命令行中运行 `npm start` 来启动并运行 `dev server`。
+
+### 2. 通过 Node.js API
+
+当使用 webpack dev server 和 Node.js API 时，不要将 dev server 选项放在 webpack 配置对象(webpack config object)中。而是，在创建选项时，将其作为第二个参数传递。例如：
+`new WebpackDevServer(compiler, options)`  
+想要启用 HMR，还需要修改 webpack 配置对象，使其包含 HMR 入口起点。`webpack-dev-server` package 中具有一个叫做 `addDevServerEntrypoints` 的方法，你可以通过使用这个方法来实现。
+
+### 3. HMR 修改样式表
+
+借助于 `style-loader` 的帮助，CSS 的模块热替换实际上是相当简单的。当更新 CSS 依赖模块时，此 loader 在后台使用 `module.hot.accept` 来修补(patch) `<style>` 标签。
+
+终端执行 `npm run start` 后，修改css样式并保持会立刻看到效果而无需刷新
+
+### 4. 其他代码和框架
+
+社区还有许多其他 loader 和示例，可以使 HMR 与各种框架和库(library)平滑地进行交互……
+
+* [React Hot Loader](https://github.com/gaearon/react-hot-loader)：实时调整 react 组件。
+* [Vue Loader](https://github.com/vuejs/vue-loader)：此 loader 支持用于 vue 组件的 HMR，提供开箱即用体验。
+* [Elm Hot Loader](https://github.com/fluxxu/elm-hot-loader)：支持用于 Elm 程序语言的 HMR。
+* [Redux HMR](https://survivejs.com/webpack/appendices/hmr-with-react/#configuring-hmr-with-redux)：无需 loader 或插件！只需对 main store 文件进行简单的修改。
+* [Angular HMR](https://github.com/gdi2290/angular-hmr)：No loader necessary! A simple change to your main NgModule file is all that's required to have full control over the HMR APIs.没有必要使用 loader！只需对主要的 NgModule 文件进行简单的修改，由 HMR API 完全控制。
+
+推荐阅读：[概念 - 模块热替换(Hot Module Replacement)](https://www.webpackjs.com/concepts/hot-module-replacement) | 
+[API - 模块热替换(Hot Module Replacement)](https://www.webpackjs.com/api/hot-module-replacement)  
+
+
+
 > 参考链接  
 > [webpack](https://www.webpackjs.com/) | 
 [指南-起步](https://www.webpackjs.com/guides/getting-started/)  
