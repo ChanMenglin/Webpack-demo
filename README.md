@@ -204,6 +204,49 @@ npm install --save-dev express webpack-dev-middleware
 
 推荐阅读：[模块热替换(hot module replacement)](https://www.webpackjs.com/guides/hot-module-replacement)
 
+## 8. 生产环境构建
+
+### 1. 配置
+
+开发环境(development)和生产环境(production)的构建目标差异很大。在开发环境中，我们需要具有强大的、具有实时重新加载(live reloading)或热模块替换(hot module replacement)能力的 source map 和 localhost server。而在生产环境中，我们的目标则转向于关注更小的 bundle，更轻量的 source map，以及更优化的资源，以改善加载时间。由于要遵循逻辑分离，我们通常建议为每个环境编写彼此独立的 webpack 配置。
+
+虽然，以上我们将生产环境和开发环境做了略微区分，但是，请注意，我们还是会遵循不重复原则(Don't repeat yourself - DRY)，保留一个“通用”配置。为了将这些配置合并在一起，我们将使用一个名为 [`webpack-merge`](https://github.com/survivejs/webpack-merge) 的工具。通过“通用”配置，我们不必在环境特定(environment-specific)的配置中重复代码。
+
+我们先从安装 `webpack-merge` 开始，并将之前指南中已经成型的那些代码再次进行分离：
+```
+npm install --save-dev webpack-merge
+```
+现在，在 `webpack.common.js` 中，我们设置了 `entry` 和 `output` 配置，并且在其中引入这两个环境公用的全部插件。在 `webpack.dev.js` 中，我们为此环境添加了推荐的 `devtool`（强大的 source map）和简单的 `devServer` 配置。最后，在 `webpack.prod.js` 中，我们引入了之前在 [tree shaking](https://www.webpackjs.com/guides/tree-shaking) 指南中介绍过的 `UglifyJSPlugin`。  
+
+现在，我们把 scripts 重新指向到新配置。我们将 `npm start` 定义为开发环境脚本，并在其中使用 `webpack-dev-server`，将 `npm run build` 定义为生产环境脚本  
+
+### 2. Minification
+
+注意，虽然 [`UglifyJSPlugin`](https://www.webpackjs.com/plugins/uglifyjs-webpack-plugin) 是代码压缩方面比较好的选择，但是还有一些其他可选择项。以下有几个同样很受欢迎的插件：
+* [`BabelMinifyWebpackPlugin`](https://github.com/webpack-contrib/babel-minify-webpack-plugin)
+* [`ClosureCompilerPlugin`](https://github.com/roman01la/webpack-closure-compiler)
+如果决定尝试以上这些，只要确保新插件也会按照 [tree shake](https://www.webpackjs.com/guides/tree-shaking) 指南中所陈述的，具有删除未引用代码(dead code)的能力足矣。
+
+### 3. source map
+
+我们鼓励你在生产环境中启用 `source map`，因为它们对调试源码(debug)和运行基准测试(benchmark tests)很有帮助。虽然有如此强大的功能，然而还是应该针对生成环境用途，选择一个构建快速的推荐配置（具体细节请查看 [`devtool`](https://www.webpackjs.com/configuration/devtool)）。对于本指南，我们将在生产环境中使用 `source-map` 选项，而不是我们在开发环境中用到的 `inline-source-map`
+
+> 避免在生产中使用 `inline-***` 和 `eval-***`，因为它们可以增加 bundle 大小，并降低整体性能。
+
+### 4. 指定环境
+
+许多 library 将通过与 `process.env.NODE_ENV` 环境变量关联，以决定 library 中应该引用哪些内容。例如，当不处于生产环境中时，某些 library 为了使调试变得容易，可能会添加额外的日志记录(log)和测试(test)。其实，当使用 `process.env.NODE_ENV === 'production'` 时，一些 library 可能针对具体用户的环境进行代码优化，从而删除或添加一些重要代码。我们可以使用 webpack 内置的 [`DefinePlugin`](https://www.webpackjs.com/plugins/define-plugin) 为所有的依赖定义这个变量  
+
+> 技术上讲，`NODE_ENV` 是一个由 Node.js 暴露给执行脚本的系统环境变量。通常用于决定在开发环境与生产环境(dev-vs-prod)下，服务器工具、构建脚本和客户端 library 的行为。然而，与预期不同的是，无法在构建脚本 `webpack.config.js` 中，将 `process.env.NODE_ENV` 设置为 `"production"`，请查看 [#2537](https://github.com/webpack/webpack/issues/2537)。因此，例如 `process.env.NODE_ENV === 'production' ? '[name].[hash].bundle.js' : '[name].bundle.js'` 这样的条件语句，在 webpack 配置文件中，无法按照预期运行。
+
+### 5. Split CSS
+
+正如在管理资源中最后的 [加载 CSS](https://www.webpackjs.com/guides/asset-management#loading-css) 小节中所提到的，通常最好的做法是使用 `ExtractTextPlugin` 将 CSS 分离成单独的文件。在插件[文档](https://www.webpackjs.com/plugins/extract-text-webpack-plugin)中有一些很好的实现例子。`disable` 选项可以和 `--env` 标记结合使用，以允许在开发中进行内联加载，推荐用于热模块替换和构建速度。  
+
+### 6. CLI 替代选项
+
+以上描述也可以通过命令行实现。例如，`--optimize-minimize` 标记将在后台引用 `UglifyJSPlugin`。和以上描述的 `DefinePlugin` 实例相同，`--define` `process.env.NODE_ENV="'production'"` 也会做同样的事情。并且，`webpack -p` 将自动地调用上述这些标记，从而调用需要引入的插件。
+
 > 参考链接  
 > [webpack](https://www.webpackjs.com/) | 
 [指南-起步](https://www.webpackjs.com/guides/getting-started/)  
