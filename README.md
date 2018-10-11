@@ -132,6 +132,35 @@ npm install clean-webpack-plugin --save-dev
 
 推荐阅读：[开发指南](https://www.webpackjs.com/guides/development) | [代码分离指南](https://www.webpackjs.com/guides/code-splitting)
 
+## 6-2 代码分离
+
+代码分离是 webpack 中最引人注目的特性之一。此特性能够把代码分离到不同的 bundle 中，然后可以按需加载或并行加载这些文件。代码分离可以用于获取更小的 bundle，以及控制资源加载优先级，如果使用合理，会极大影响加载时间。
+
+有三种常用的代码分离方法：
+
+* 入口起点：使用 [entry](https://www.webpackjs.com/configuration/entry-context) 配置手动地分离代码。
+* 防止重复：使用 [SplitChunksPlugin](https://webpack.js.org/plugins/split-chunks-plugin/) 去重和分离 chunk。
+* 动态导入：通过模块的内联函数调用来分离代码。
+
+### 1. 入口起点(entry points)
+
+这种方法存在一些问题:
+
+* 如果入口 chunks 之间包含重复的模块，那些重复模块都会被引入到各个 bundle 中。
+* 这种方法不够灵活，并且不能将核心应用程序逻辑进行动态拆分代码。
+
+### 2. 防止重复(prevent duplication)
+
+[`SplitChunksPlugin`](https://webpack.js.org/plugins/split-chunks-plugin/) 插件可以将公共的依赖模块提取到已有的入口 chunk 中，或者提取到一个新生成的 chunk。
+
+以下是社区提供的用于拆分代码的一些其他有用的插件和加载器：
+
+* [`mini-css-extract-plugin`](https://webpack.js.org/plugins/mini-css-extract-plugin)：用于从主应用程序中分离CSS。
+* [`bundle-loader`](https://www.webpackjs.com/loaders/bundle-loader)：用于拆分代码并延迟加载生成的包。
+* [`promise-loader`](https://github.com/gaearon/promise-loader)：类似 `bundle-loader` 但使用的是 promises。
+
+
+
 > 参考链接  
 > [webpack](https://www.webpackjs.com/) | 
 [指南-起步](https://www.webpackjs.com/guides/getting-started/)  
