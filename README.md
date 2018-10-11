@@ -159,7 +159,21 @@ npm install clean-webpack-plugin --save-dev
 * [`bundle-loader`](https://www.webpackjs.com/loaders/bundle-loader)：用于拆分代码并延迟加载生成的包。
 * [`promise-loader`](https://github.com/gaearon/promise-loader)：类似 `bundle-loader` 但使用的是 promises。
 
+### 3. 动态导入(dynamic imports)
 
+当涉及到动态代码拆分时，webpack 提供了两个类似的技术。对于动态导入，第一种，也是优先选择的方式是，使用符合 [ECMAScript 提案](https://github.com/tc39/proposal-dynamic-import) 的 [`import() 语法`](https://www.webpackjs.com/api/module-methods#import-)。第二种，则是使用 webpack 特定的 [`require.ensure`](https://www.webpackjs.com/api/module-methods#require-ensure)。
+
+> `import()` 调用会在内部用到 [`promises`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise)。如果在旧有版本浏览器中使用 `import()`，记得使用 一个 polyfill 库（例如 [es6-promise](https://github.com/stefanpenner/es6-promise) 或 [promise-polyfill](https://github.com/taylorhakes/promise-polyfill)），来 shim Promise。
+
+### 4. bundle 分析(bundle analysis)
+
+分析输出结果是很有用处的。[官方分析工具](https://github.com/webpack/analyse) 是一个好的初始选择。下面是一些社区支持(community-supported)的可选工具：
+
+* [webpack-chart](https://alexkuz.github.io/webpack-chart/): webpack 数据交互饼图。
+* [webpack-visualizer](https://chrisbateman.github.io/webpack-visualizer/): 可视化并分析你的 bundle，检查哪些模块占用空间，哪些可能是重复使用的。
+* [webpack-bundle-analyzer](https://github.com/webpack-contrib/webpack-bundle-analyzer): 一款分析 bundle 内容的插件及 CLI 工具，以便捷的、交互式、可缩放的树状图形式展现给用户。
+
+推荐阅读：[懒加载](https://www.webpackjs.com/guides/lazy-loading)
 
 > 参考链接  
 > [webpack](https://www.webpackjs.com/) | 
