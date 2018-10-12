@@ -175,6 +175,15 @@ npm install clean-webpack-plugin --save-dev
 
 推荐阅读：[懒加载](https://www.webpackjs.com/guides/lazy-loading)
 
+## 7-2 懒加载
+
+许多框架和类库对于如何用它们自己的方式来实现（懒加载）都有自己的建议。这里有一些例子：
+
+* React: [Code Splitting and Lazy Loading](https://reacttraining.com/react-router/web/guides/code-splitting)
+* Vue: [Lazy Load in Vue using Webpack's code splitting](https://alexjoverm.github.io/2017/07/16/Lazy-load-in-Vue-using-Webpack-s-code-splitting/)
+* AngularJS: [AngularJS + Webpack = lazyLoad](https://medium.com/@var_bin/angularjs-webpack-lazyload-bb7977f390dd) by [@var_bincom](https://twitter.com/var_bincom)
+
+
 > 参考链接  
 > [webpack](https://www.webpackjs.com/) | 
 [指南-起步](https://www.webpackjs.com/guides/getting-started/)  
