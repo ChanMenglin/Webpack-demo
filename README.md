@@ -132,6 +132,33 @@ npm install clean-webpack-plugin --save-dev
 
 推荐阅读：[开发指南](https://www.webpackjs.com/guides/development) | [代码分离指南](https://www.webpackjs.com/guides/code-splitting)
 
+## 6-3. 缓存
+
+由于获取资源是比较耗费时间的，这就是为什么浏览器使用一种名为 缓存 的技术。可以通过命中缓存，以降低网络流量，使网站加载速度更快，然而，如果我们在部署新版本时不更改资源的文件名，浏览器可能会认为它没有被更新，就会使用它的缓存版本。由于缓存的存在，当你需要获取新的代码时，就会显得很棘手。  
+
+此指南的重点在于通过必要的配置，以确保 webpack 编译生成的文件能够被客户端缓存，而在文件内容变化后，能够请求到新的文件。  
+
+### 1. 输出文件的文件名(Output Filenames)
+
+通过使用 `output.filename` 进行[文件名替换](https://www.webpackjs.com/configuration/output#output-filename)，可以确保浏览器获取到修改后的文件。[`hash`] 替换可以用于在文件名中包含一个构建相关(build-specific)的 hash，但是更好的方式是使用 [`chunkhash`] 替换，在文件名中包含一个 chunk 相关(chunk-specific)的哈希。  
+bundle 的名称是它内容（通过 hash）的映射。如果我们不做修改，然后再次运行构建，我们以为文件名会保持不变。然而，如果我们真的运行，可能会发现情况并非如此：（如果不做修改，文件名可能会变，也可能不会。）
+
+### 2. 提取模板(Extracting Boilerplate)
+
+就像我们之前从[代码分离](https://www.webpackjs.com/guides/code-splitting)了解到的，[SplitChunksPlugin](https://webpack.js.org/plugins/split-chunks-plugin/) 可以用于将模块分离到单独的文件中。webpack提供了一个优化功能，它根据提供的选项将运行时代码拆分为单独的块，使用 [`optimization.runtimeChunk `](https://webpack.js.org/configuration/optimization/#optimization-runtimechunk) 此插件会自动将我们需要的内容提取到单独的包中
+
+将第三方库（例如lodash或）提取react到单独的vendor块中也是一种很好的做法，因为它们比我们的本地源代码更不可能更改。此步骤将允许客户端从服务器请求更少，以保持最新。这可以通过使用 [SplitChunksPlugin的示例](https://webpack.js.org/plugins/split-chunks-plugin/#split-chunks-example-2) 中演示的 [`cacheGroups`](https://webpack.js.org/plugins/split-chunks-plugin/#splitchunks-cachegroups) 选项来完成。
+
+### 3. 模块标识符(Module Identifiers)
+
+因为每个 [`module.id`](https://www.webpackjs.com/api/module-variables#module-id-commonjs-) 会基于默认的解析顺序(resolve order)进行增量。也就是说，当解析顺序发生变化，ID 也会随之改变。因此，简要概括：
+
+* `main bundle` 会随着自身的新增内容的修改，而发生变化。
+* `vendor bundle` 会随着自身的 `module.id` 的修改，而发生变化。
+* `manifest bundle` 会因为当前包含一个新模块的引用，而发生变化。
+
+第一个和最后一个都是符合预期的行为 -- 而 vendor 的 hash 发生变化是我们要修复的。幸运的是，可以使用两个插件来解决这个问题。第一个插件是 [`NamedModulesPlugin`](https://www.webpackjs.com/plugins/named-modules-plugin)，将使用模块的路径，而不是数字标识符。虽然此插件有助于在开发过程中输出结果的可读性，然而执行时间会长一些。第二个选择是使用 [`HashedModuleIdsPlugin`](https://www.webpackjs.com/plugins/hashed-module-ids-plugin)，推荐用于生产环境构建
+
 > 参考链接  
 > [webpack](https://www.webpackjs.com/) | 
 [指南-起步](https://www.webpackjs.com/guides/getting-started/)  
